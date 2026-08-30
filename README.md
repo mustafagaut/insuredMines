@@ -105,44 +105,51 @@ policy_number, policy_start_date, policy_end_date
 
 **Request Example:**
 ```
-GET /policy/search?username=mustafa@example.com
+GET http://localhost:5000/policy/search?username=Lura Lucca
 ```
 
 **Response:**
 ```json
 {
-  "success": true,
-  "data": {
-    "user": {
-      "_id": "user_id",
-      "firstName": "Mustafa",
-      "email": "mustafa@example.com",
-      "phoneNumber": "1234567890",
-      "address": "123 Main St",
-      "state": "TX",
-      "zipCode": "75001",
-      "gender": "male",
-      "userType": "individual",
-      "dob": "1990-01-15T00:00:00.000Z"
-    },
-    "policies": [
-      {
-        "_id": "policy_id",
-        "policyNumber": "POL-2024-001",
-        "policyStartDate": "2024-01-01",
-        "policyEndDate": "2025-01-01",
-        "policyCategoryId": {
-          "_id": "category_id",
-          "categoryName": "Auto Insurance"
+    "success": true,
+    "data": {
+        "user": {
+            "_id": "6a92befe74a5b7aac2d248ee",
+            "email": "madler@yahoo.ca",
+            "__v": 0,
+            "address": "170 MATTHIAS CT",
+            "createdAt": "2026-08-29T11:14:06.166Z",
+            "dob": "1970-01-01T00:00:21.957Z",
+            "firstName": "Lura Lucca",
+            "gender": null,
+            "phoneNumber": "8677356559",
+            "state": "NC",
+            "updatedAt": "2026-08-30T15:08:07.744Z",
+            "userType": "Active Client",
+            "zipCode": "27028"
         },
-        "companyId": {
-          "_id": "company_id",
-          "companyName": "ABC Insurance Co"
-        }
-      }
-    ],
-    "totalPolicies": 1
-  }
+        "policies": [
+            {
+                "_id": "6a92bf6574a5b7aac2d24dac",
+                "policyNumber": "YEEX9MOIBU7X",
+                "__v": 0,
+                "companyId": {
+                    "_id": "6a92befe74a5b7aac2d24d7e",
+                    "companyName": "Integon Gen Ins Corp"
+                },
+                "createdAt": "2026-08-29T11:15:49.258Z",
+                "policyCategoryId": {
+                    "_id": "6a92befe74a5b7aac2d24d6b",
+                    "categoryName": "Commercial Auto"
+                },
+                "policyEndDate": "1970-01-01T00:00:43.771Z",
+                "policyStartDate": "1970-01-01T00:00:43.406Z",
+                "updatedAt": "2026-08-30T15:08:08.676Z",
+                "userId": "6a92befe74a5b7aac2d248ee"
+            }
+        ],
+        "totalPolicies": 1
+    }
 }
 ```
 
@@ -171,28 +178,47 @@ GET /policy/aggregated
 {
   "success": true,
   "data": [
-    {
-      "_id": "user_id",
-      "userName": "Mustafa",
-      "userEmail": "mustafa@example.com",
-      "totalPolicies": 3,
-      "policies": [
-        {
-          "policyNumber": "POL-2024-001",
-          "startDate": "2024-01-01T00:00:00.000Z",
-          "endDate": "2025-01-01T00:00:00.000Z",
-          "category": "Auto Insurance",
-          "carrier": "ABC Insurance Co"
+   {
+    "success": true,
+    "data": {
+        "user": {
+            "_id": "6a92befe74a5b7aac2d248ee",
+            "email": "madler@yahoo.ca",
+            "__v": 0,
+            "address": "170 MATTHIAS CT",
+            "createdAt": "2026-08-29T11:14:06.166Z",
+            "dob": "1970-01-01T00:00:21.957Z",
+            "firstName": "Lura Lucca",
+            "gender": null,
+            "phoneNumber": "8677356559",
+            "state": "NC",
+            "updatedAt": "2026-08-30T15:08:07.744Z",
+            "userType": "Active Client",
+            "zipCode": "27028"
         },
-        {
-          "policyNumber": "POL-2024-002",
-          "startDate": "2024-02-01T00:00:00.000Z",
-          "endDate": "2025-02-01T00:00:00.000Z",
-          "category": "Home Insurance",
-          "carrier": "XYZ Insurance Ltd"
-        }
-      ]
+        "policies": [
+            {
+                "_id": "6a92bf6574a5b7aac2d24dac",
+                "policyNumber": "YEEX9MOIBU7X",
+                "__v": 0,
+                "companyId": {
+                    "_id": "6a92befe74a5b7aac2d24d7e",
+                    "companyName": "Integon Gen Ins Corp"
+                },
+                "createdAt": "2026-08-29T11:15:49.258Z",
+                "policyCategoryId": {
+                    "_id": "6a92befe74a5b7aac2d24d6b",
+                    "categoryName": "Commercial Auto"
+                },
+                "policyEndDate": "1970-01-01T00:00:43.771Z",
+                "policyStartDate": "1970-01-01T00:00:43.406Z",
+                "updatedAt": "2026-08-30T15:08:08.676Z",
+                "userId": "6a92befe74a5b7aac2d248ee"
+            }
+        ],
+        "totalPolicies": 1
     }
+}
   ],
   "totalUsers": 1
 }
@@ -425,7 +451,7 @@ curl -X POST \
 
 ### Search Policy by Username
 ```bash
-curl "http://localhost:5000/policy/search?username=mustafa@example.com"
+curl "http://localhost:5000/policy/search?username=Lura Lucca"
 ```
 
 ### Get Aggregated Policies
