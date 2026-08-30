@@ -6,6 +6,7 @@ const {
     searchPolicyByUsername,
     getAggregatedPolicies
 } = require("../controllers/policy.controller");
+const uploadMiddleware = require("../middleware/upload.middleware");
 
 router.post("/upload", uploadMiddleware.single("file"), uploadFile);
 
