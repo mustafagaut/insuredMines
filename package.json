@@ -8,13 +8,19 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"pm2 ./index.js"
+    "start": "pm2 start ecosystem.config.js",
+    "dev": "node index.js",
+    "pm2:stop": "pm2 stop tech",
+    "pm2:restart": "pm2 restart tech",
+    "pm2:logs": "pm2 logs tech",
+    "pm2:kill": "pm2 kill"
   },
   "dependencies": {
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "mongoose": "^9.9.4",
     "multer": "^2.3.0",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "pm2": "^5.3.0"
   }
 }

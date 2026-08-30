@@ -202,7 +202,7 @@ GET /policy/aggregated
 
 ## Task 2: Monitoring & Services
 
-### 1. CPU Monitoring Service
+### 1. CPU Monitoring Service with PM2 Auto-Restart
 
 **Location:** `services/cpuMonitor.js`
 
@@ -219,16 +219,31 @@ const CHECK_INTERVAL = 5000;   // Check interval (5 seconds)
 2. Monitors CPU usage every 5 seconds
 3. Calculates usage across all CPU cores
 4. If CPU usage ≥ 70%, server exits with code 1
-5. Process manager (PM2, Docker, systemd) restarts server
-6. Logs CPU metrics to console
+5. **PM2 detects the exit and automatically restarts the process**
+6. Logs CPU metrics to console with timestamps
+
+**PM2 Integration:**
+- **Auto-restart:** Enabled via `ecosystem.config.js`
+- **Max restarts:** 10 attempts before giving up
+- **Min uptime:** 10 seconds before considering startup successful
+- **Memory limit:** 500MB (auto-restart if exceeded)
+- **Graceful shutdown:** 5 second timeout before force-kill
 
 **Console Output Example:**
 ```
-CPU monitor started
-CPU Usage: 45.23%
-CPU Usage: 52.15%
-CPU Usage: 71.89%
-[ERROR] CPU usage exceeded 70% - Restarting server...
+[CPU Monitor] Started - Threshold: 70%, Check Interval: 5000ms
+[CPU Monitor] Current Usage: 45.23%
+[CPU Monitor] Current Usage: 52.15%
+[CPU Monitor] Current Usage: 71.89%
+[ALERT] CPU usage exceeded 70% (71.89%) - Server will restart via PM2
+
+App <tech> exited with code 1 via signal SIGTERM
+App <tech> restarted
+```
+
+**View CPU monitoring logs in real-time:**
+```bash
+npm run pm2:logs
 ```
 
 ---
@@ -312,7 +327,7 @@ tech/
 ├── config/
 │   └── db.js                    # MongoDB connection configuration
 ├── controllers/
-│   ├── upload.controller.js     # Upload, search, aggregation logic
+│   ├── policy.controller.js     # Upload, search, aggregation logic
 │   └── message.controller.js    # Message scheduling logic
 ├── models/
 │   ├── agent.model.js
@@ -330,9 +345,13 @@ tech/
 │   └── messageScheduler.js      # Message scheduling logic
 ├── workers/
 │   └── upload.worker.js         # Worker thread for file processing
+├── logs/                        # PM2 log files
 ├── uploads/                     # Directory for uploaded files
-├── data-sheet.csv               # Sample data file
+├── ecosystem.config.js          # PM2 configuration file
+├── PM2_SETUP.md                 # PM2 setup guide
+├── README.md                    # This file
 ├── package.json                 # Dependencies
+├── data-sheet.csv               # Sample data file
 └── index.js                     # Main server entry point
 ```
 
@@ -360,11 +379,33 @@ NODE_ENV=development
 ```
 
 3. **Start the server:**
+
+**Option A: With PM2 (Recommended for Production)**
 ```bash
-node index.js
+npm start
 ```
+This starts the application with PM2, which automatically restarts the server when CPU usage exceeds 70%.
+
+**Option B: Development Mode (Direct Node)**
+```bash
+npm run dev
+```
+This runs the server directly without PM2.
 
 Server will run on `http://localhost:5000`
+
+### PM2 Management Commands
+
+Once running with PM2, use these commands:
+
+```bash
+npm run pm2:stop      # Stop the application
+npm run pm2:restart   # Restart the application
+npm run pm2:logs      # View real-time logs
+npm run pm2:kill      # Kill all PM2 processes
+```
+
+For detailed PM2 setup and configuration, see [PM2_SETUP.md](./PM2_SETUP.md)
 
 ---
 

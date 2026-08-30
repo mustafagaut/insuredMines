@@ -43,25 +43,26 @@ function getCPUUsage() {
 }
 
 function startCPUMonitor() {
-    console.log("CPU monitor started");
+    console.log(`[CPU Monitor] Started - Threshold: ${CPU_THRESHOLD}%, Check Interval: ${CHECK_INTERVAL}ms`);
 
     setInterval(async () => {
         try {
             const cpuUsage = await getCPUUsage();
 
             console.log(
-                `CPU Usage: ${cpuUsage.toFixed(2)}%`
+                `[CPU Monitor] Current Usage: ${cpuUsage.toFixed(2)}%`
             );
 
             if (cpuUsage >= CPU_THRESHOLD) {
-                console.log(
-                    `CPU usage exceeded ${CPU_THRESHOLD}%`
+                console.error(
+                    `[ALERT] CPU usage exceeded ${CPU_THRESHOLD}% (${cpuUsage.toFixed(2)}%) - Server will restart via PM2`
                 );
 
+                // PM2 will detect this exit and restart the process
                 process.exit(1);
             }
         } catch (error) {
-            console.error("CPU monitor error:", error);
+            console.error(`[CPU Monitor Error] ${error.message}`);
         }
     }, CHECK_INTERVAL);
 }

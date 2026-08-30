@@ -2,6 +2,8 @@ const path = require("path");
 const { Worker } = require("worker_threads");
 const PolicyInfo = require("../models/policyInfo.model");
 const User = require("../models/user.model");
+const PolicyCategory = require("../models/policyCategory.model");
+const PolicyCarrier = require("../models/policyCarrier.model");
 
 const uploadFile = (req, res) => {
     if (!req.file) {
@@ -55,7 +57,7 @@ const searchPolicyByUsername = async (req, res) => {
         }
 
         const user = await User.findOne({
-            username: {
+            firstName: {
                 $regex: username,
                 $options: "i"
             }
@@ -142,11 +144,11 @@ const getAggregatedPolicies = async (req, res) => {
                 $group: {
                     _id: "$userId",
 
-                    username: {
-                        $first: "$user.username"
+                    userName: {
+                        $first: "$user.firstName"
                     },
 
-                    email: {
+                    userEmail: {
                         $first: "$user.email"
                     },
 
